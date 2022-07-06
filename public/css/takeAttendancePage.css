@@ -1,0 +1,7 @@
+.attendanceStarted {
+    background-color: red;
+}
+
+.attendanceStarted.btn:focus {
+    background-color: red;
+  }

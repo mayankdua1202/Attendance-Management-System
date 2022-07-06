@@ -1,0 +1,50 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top">
+  
+  <div id="wrapper">
+    <%- include("partials/ssidebar") -%>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <%- include("partials/topbar", {name: user.name}) -%>
+
+        <div class="container-fluid student-dashboard" id="container-wrapper">
+          
+          
+          <% if(recognizeFace === false) { %>
+            <h5 class="not-taking">Oops! Our model didn't recognize your face. Try Again! 🙁</h5>
+            <a href="/click-image"><i class="fa fa-refresh fa-spin" style="font-size:48px;color:red"></i></a>
+          <% } else { %>
+            <h5 class="taking">Congratulations! You have been marked present. 🤩</h5>
+            <div class="loader"></div>
+            <form id="hiddenForm" action="/sdashboard" method="get"></form>
+            <h6>Redirecting to your dashboard...</h6>
+          <% } %>
+
+          
+
+          <%- include("partials/modalLogout") -%>
+
+        </div>
+      </div>
+
+
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+
+  <script>
+    form = document.querySelector("#hiddenForm");
+    if ('<%=recognizeFace%>' === 'true') {
+      setTimeout(function () {
+        form.submit();
+      }, 5000);
+    }
+  </script>
+
+
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+
+  <%- include("partials/scripts") -%>

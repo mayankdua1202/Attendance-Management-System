@@ -1,0 +1,113 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top" style="text-align: center;">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <%- include("partials/sidebar") -%>
+    <!-- Sidebar -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <%- include("partials/topbar", {name: user.name}) -%>
+        <!-- Topbar -->
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">MCA</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a">Home</a></li>
+              <li class="breadcrumb-item">Take Attendance</li>
+            </ol>
+          </div>
+
+          <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Take Attendance</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Today's Date : <%= new Date().toDateString(); %></h6>
+                </div>
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Record</th>
+                        <th>Percentage</th>
+                        <th>Mark Attendance</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <% students.forEach(function(student, index) { %>
+                        <tr>
+                          <td><%= index %></td>
+                          <td><%= student.name %></td>
+                          <% p = student.presentClasses %>
+                          <% t = student.totalClasses %>
+                          <td><%= p %> / <%= t %></td>
+                          <% percentage = t === 0 ? "0" : parseInt((p / t)*100) %>
+                          <td><%= percentage %> %</td>
+                          <td>
+                            <label class="main">
+                              <% present = "" %>
+                              <% if(presentStudentEmails !== null) { %>
+                                <% presentStudentEmails.record.forEach(function(email) { %>
+                                  <% if(student.email === email) { %>
+                                    <% present = "checked" %>
+                                  <% } %>
+                                <% }); %>
+                              <% } %>
+                              <input type="checkbox" disabled="disabled" <%=present%>>
+                              <span class="geekmark"></span> 
+                            </label>
+                          </td>
+                        </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                  <form action="/toggleAttendanceStatus" mathod="get">
+                    <button  type="submit" name="save" class="btn btn-sm btn-primary start-taking-attendance" style="margin: 15px 40% 15px 40%">
+                      <% if( attendanceStatus === false) { %>
+                        Start Taking Attendance
+                      <% } else { %>
+                        Stop Taking Attendance
+                      <% } %>
+                    
+                    </button>
+                  </form>                  
+                </div>
+              </div>
+            </div>
+          <!--Row-->
+
+          <!-- Modal Logout -->
+          <%- include("partials/modalLogout") -%>
+
+        </div>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+
+  <script>
+    
+    button = document.querySelector(".start-taking-attendance");
+
+    if( '<%= attendanceStatus %>' === 'true' ) { 
+      button.classList.add("attendanceStarted");
+    }
+
+    // button.onclick() {
+    //   alert("clicked");
+    // }
+
+  </script>
+
+
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+  
+<%- include("partials/scripts") -%>

@@ -1,0 +1,42 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <%- include("partials/ssidebar") -%>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <%- include("partials/topbar", {name: user.name}) -%>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4" style="height: 100vh;"> -->
+          <div style="height: 100vh; text-align: center;">
+            <h1 class="h3 mb-0 text-gray-800">
+              Your Face Image
+            </h1>
+
+            <div class="image-card">
+              <div class="drag-image-box">
+                <img class="user-image" src="../images/<%=user.email%>.jpg" alt= "<%= user.name + ' image' %>" >                
+              </div>  
+            </div>
+          </div>
+
+          <!-- Modal Logout -->
+          <%- include("partials/modalLogout") -%>
+
+        </div>
+        <!---Container Fluid-->
+      </div>
+
+      <!-- Footer -->
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+
+  <%- include("partials/scripts") -%>

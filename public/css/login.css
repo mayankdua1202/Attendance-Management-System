@@ -1,0 +1,312 @@
+*{
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+
+
+}
+
+.full-page
+
+{
+
+    height: 100%;
+
+    width: 100%;
+
+    /* background: coral;     */
+
+    position: absolute;
+
+    background-position: center;
+
+    margin: 0;
+
+}
+
+.navigation-bar
+
+{
+
+    display: block;
+
+    align-items: center;
+
+    /*padding: 50px;*/
+
+    background: rgba(0,0,0,0.6);
+
+    /*padding-left: 80px;
+
+    padding-right: 30px;
+
+    padding-top: 50px;*/
+
+}
+
+.logo
+
+{
+
+    position: relative;
+
+    padding:  20px 0;
+
+    text-align: center;
+}
+
+.logo a
+
+{
+
+    text-decoration: none;
+
+    color: white;
+
+    font-size: 40px;
+
+    padding:  40px;
+
+}
+
+nav
+
+{
+
+    /*flex: 1;*/
+
+    /*position: fixed;*/
+
+    /*right: 0;*/
+
+}
+
+nav ul 
+
+{
+
+    display: block;
+
+    list-style: none;
+
+}
+
+nav ul li
+
+{
+
+    display: inline-block;
+
+    margin-right: 90px;
+
+    margin-top: 17px;
+
+}
+
+nav ul li a
+
+{
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    color: white;
+
+    font-family: sans-serif;
+
+}
+
+nav ul li a:hover
+
+{
+
+    color: saddlebrown;
+
+}
+
+.row
+
+{
+
+    position: relative;
+    /* top:  20px; */
+
+    /* display: block; */
+
+    align-items: center;
+
+    /*flex-wrap: wrap;*/
+
+    /*justify-content: space-around;*/
+
+}
+
+.col-1
+
+{
+
+    /*flex-basis: 50%;*/
+
+    min-width: 300px;
+
+}
+
+.form-box
+
+{
+
+    width: 40%;
+
+	/* height: 400px; */
+
+	position: relative;
+
+    /*top: 40%;*/
+
+    /*left: 50%;*/
+
+    margin:  0 auto;
+	background: rgba(0,0,0,0.6);
+
+}
+
+.main-heading
+
+{
+
+    color: #6777ef;
+    font-weight: bolder;
+    padding-bottom: 20px;
+
+}
+
+.form
+
+{
+
+	position: relative;
+
+	margin: 0 auto;
+
+	padding: 45px;
+
+    text-align: center;
+
+    height:  inherit;
+
+}
+
+.form input
+
+{
+
+	font-family: sans-serif;
+
+	outline: none;
+
+    border: none;
+
+    border-bottom: 1px solid black;
+
+	width: 100%;
+
+	margin: 0 0 15px;
+
+	padding: 15px;
+
+	font-size: 14px;
+
+}
+
+.form button
+
+{
+
+	font-family: sans-serif;
+
+	width: 100%;
+
+    color: white;
+
+	font-size: 20px;
+
+    letter-spacing: 2px;
+
+	cursor: pointer;
+
+	padding: 15px;
+
+    border: none;
+
+    background: #6777ef;
+
+}
+
+.form .message
+
+{
+
+    font-size: 15px;
+
+	margin: 15px 0 0;
+
+    color: white;
+
+    letter-spacing: 2px;
+
+}
+
+.form .message a
+{
+	color: #6777ef;
+
+	text-decoration: none;
+
+}
+.form .registerForm{
+
+	/* display: none; */
+
+}
+
+.hidden {
+    display: none;
+}
+
+.defination
+
+{
+    text-align: left;
+
+    font-size: 30px;
+
+    color: white;
+
+    font-family: 'Kaushan Script', cursive;
+
+    padding-left: 60px;
+
+}
+.btn-group{
+    margin: 10px auto;
+}
+
+.btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
+    background-color: #6777ef;
+    border-color: #6777ef;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+
+    .form-box
+    {
+
+        width: 80%;
+    }
+}

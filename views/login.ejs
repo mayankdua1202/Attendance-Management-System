@@ -1,0 +1,73 @@
+<%- include("partials/headPortion", {page: page}); -%>
+
+<body id="page-top">
+
+  <div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <span style="color: white; font-size: 20px">Face Recognition Attendance System</span>
+        </nav>
+        <!-- Topbar -->
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="row mb-3 full-page">
+                  <div class="form-box">
+                    <div class="form">
+                      <form class="loginForm <%= page==='Register' ? 'hidden' : '' %>" method="post" action="/loginuser"  >
+                        <div>
+                          <h1 class="main-heading">Login Form</h1>
+                          <p style="color: red"><%= loginErrorMessage %></p>
+                        </div>
+                        <input type="text" placeholder="Email-ID" name="email" required/>
+                        <input type="password" placeholder="Password" name="password" required/>
+                        <button type="submit">LOGIN</button>
+                        <p class="message">Not Registered? <a href="#">Register</a></p>
+                      </form>
+                      
+                      <form class="registerForm <%= page==='Login' ? 'hidden' : '' %>" method="post" action="/registeruser" >
+                        <div>
+                          <h1 class="main-heading">Register Form</h1>
+                          <p style="color: red"><%= registerErrorMessage %></p>
+                        </div>
+                        <input type="text" placeholder="Username" name="name" required/>
+                        <input type="text" placeholder="Email-ID" name="email" required/>
+                        <input type="password" placeholder="Password" name="password" required/>
+                        <input type="password" placeholder="Confirm Password" name="password" required/>
+
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked value="student">
+                          <label class="btn btn-outline-primary" for="btnradio1">Student</label>
+                        
+                          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="teacher">
+                          <label class="btn btn-outline-primary" for="btnradio2">Teacher</label>
+                        
+                        </div>
+                        <button type="submit">REGISTER</button>
+                        <p class="message">Already Registered? <a href="#">Login</a>
+                        </p>
+                      </form>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+  
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script>
+      $('.message a').click(function(){$('form').animate({height: "toggle",opacity: "toggle"},"slow");});
+  </script>
+
+<%- include("partials/scripts"); -%>
+    
+  

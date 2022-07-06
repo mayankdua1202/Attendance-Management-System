@@ -1,0 +1,398 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top" style="text-align: center;">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <%- include("partials/sidebar") -%>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <%- include("partials/topbar", {name: user.name}) -%>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">MCA</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a>Home</a></li>
+              <li class="breadcrumb-item">View Attendance</li>
+            </ol>
+          </div>
+
+          <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Total Students</h6>
+              </div>
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Id</th>
+                      <th>Name</th>
+                      <th>Record</th>
+                      <th>Percentage</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <% students.forEach(function(student, index) { %>
+                    <tr>
+                      <td><%= index %></td>
+                      <td><%= student.name %></td>
+                      <% p = student.presentClasses %>
+                      <% t = student.totalClasses %>
+                      <td><%= p %> / <%= t %></td>
+                      <% percentage = t === 0 ? "0" : parseInt((p / t)*100) %>
+                      <td><%= percentage %> %</td>
+                      <td><button onclick="updateDates(this)" class="btn btn-primary calendarButton" value=<%= index %> >View Attendance</button></td>
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!--Row-->
+
+          <!-- Modal Logout -->
+          <%- include("partials/modalLogout") -%>
+
+        </div>
+        
+        <div class='overlay'>
+          <div class='popup'>
+            <div onclick="closeOverlay()" class='close'>&#10006;</div>
+
+            <div class="calendar">
+              <div class="calendar__month">
+                <div class="cal-month__previous">
+                  <</div> <div class="cal-month__current">
+                </div>
+                <div class="cal-month__next">></div>
+              </div>
+              <div class="calendar__head">
+                <div class="cal-head__day"></div>
+                <div class="cal-head__day"></div>
+                <div class="cal-head__day"></div>
+                <div class="cal-head__day"></div>
+                <div class="cal-head__day"></div>
+                <div class="cal-head__day"></div>
+                <div class="cal-head__day"></div>
+              </div>
+              <div class="calendar__body">
+                <div class="cal-body__week">
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                </div>
+                <div class="cal-body__week">
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                </div>
+                <div class="cal-body__week">
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                </div>
+                <div class="cal-body__week">
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                </div>
+                <div class="cal-body__week">
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                </div>
+                <div class="cal-body__week">
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                  <div class="cal-body__day"></div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <%- include("partials/footer") -%>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+  <script>
+
+    let present = []
+    let absent = []
+  
+    function updateDates(event) {
+      
+      const rowNumber = event.value; // starting from zero
+
+      let students = JSON.parse('<%- JSON.stringify(students) -%>');
+      present = students[rowNumber].presentClassesDates;
+
+      absent = JSON.parse('<%- JSON.stringify(totalClassesDates) -%>');
+
+      present = present.map((date) => {return new Date(date)});
+      absent = absent.map((date) => {return new Date(date)});
+
+      openPopup();
+    }
+
+    function openPopup() {
+      document.querySelector(".overlay").style.display = "block";
+      cal.drawMine();
+    }
+
+    function closeOverlay() {
+      cal.cleanCssClassesMine();
+      document.querySelector(".overlay").style.display = "none";
+    }
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+    
+    function getDatesForSpecificMonth(dates, currentMonth) {
+      const resultingDates = dates.filter((date) => {
+        const tempDate = monthNames[date.getMonth()] + " " + date.getFullYear();
+        if(tempDate === currentMonth) {
+          return true;
+        }         
+      });
+      return resultingDates;
+    }
+
+    prevMonthData = null;
+
+    class Calendar {
+
+      constructor() {
+        this.monthDiv = document.querySelector('.cal-month__current')
+        this.headDivs = document.querySelectorAll('.cal-head__day')
+        this.bodyDivs = document.querySelectorAll('.cal-body__day')
+        this.nextDiv = document.querySelector('.cal-month__next')
+        this.prevDiv = document.querySelector('.cal-month__previous')
+      }
+
+      init() {
+        moment.locale(window.navigator.userLanguage || window.navigator.language)
+
+        this.month = moment()
+        this.today = this.selected = this.month.clone()
+        this.weekDays = moment.weekdaysShort(true)
+
+        this.headDivs.forEach((day, index) => {
+          day.innerText = this.weekDays[index]
+        })
+
+        this.nextDiv.addEventListener('click', _ => {
+          this.addMonth()
+        })
+        this.prevDiv.addEventListener('click', _ => {
+          this.removeMonth()
+        })
+
+        this.bodyDivs.forEach(day => {
+          day.addEventListener('click', e => {
+            const date = +e.target.innerHTML < 10 ? `0${e.target.innerHTML}` : e.target.innerHTML
+
+            if (e.target.classList.contains('cal-day__month--next')) {
+              this.selected = moment(`${this.month.add(1, 'month').format('YYYY-MM')}-${date}`)
+            } else if (e.target.classList.contains('cal-day__month--previous')) {
+              this.selected = moment(`${this.month.subtract(1, 'month').format('YYYY-MM')}-${date}`)
+            } else {
+              this.selected = moment(`${this.month.format('YYYY-MM')}-${date}`)
+            }
+
+            this.update()
+          })
+        })       
+        
+        this.update()
+      }
+
+      update() {
+        this.calendarDays = {
+          first: this.month.clone().startOf('month').startOf('week').date(),
+          last: this.month.clone().endOf('month').date()
+        }
+
+        this.monthDays = {
+          lastPrevious: this.month.clone().subtract(1, 'months').endOf('month').date(),
+          lastCurrent: this.month.clone().endOf('month').date()
+        }
+
+        this.monthString = this.month.clone().format('MMMM YYYY')
+        
+        // console.log(this.calendarDays, this.monthDays, this.monthString)
+        // {first: 26, last: 31} {lastPrevious: 31, lastCurrent: 31} 'January 2022'
+        // {first: 30, last: 28} {lastPrevious: 31, lastCurrent: 28} 'February 2022'
+
+        this.draw()
+        this.drawMine()
+      }
+
+      addMonth() {
+        this.month.add(1, 'month')
+
+        this.update()
+      }
+
+      removeMonth() {
+        this.month.subtract(1, 'month')
+
+        this.update()
+      }
+
+      
+
+      draw() {
+        this.monthDiv.innerText = this.monthString
+
+        let index = 0
+
+        if (this.calendarDays.first > 1) {
+          for (let day = this.calendarDays.first; day <= this.monthDays.lastPrevious; index++) {
+            this.bodyDivs[index].innerText = day++
+
+            this.cleanCssClasses(false, index)
+            this.cleanCssClassesMine()
+            
+
+            this.bodyDivs[index].classList.add('cal-day__month--previous')
+          }
+        }
+
+        let isNextMonth = false
+        for (let day = 1; index <= this.bodyDivs.length - 1; index++) {
+          if (day > this.monthDays.lastCurrent) {
+            day = 1
+            isNextMonth = true
+          }
+
+          this.cleanCssClasses(true, index)
+          this.cleanCssClassesMine()
+
+          if (!isNextMonth) {
+            if (day === this.today.date() && this.today.isSame(this.month, 'day')) {
+              this.bodyDivs[index].classList.add('cal-day__day--today')
+            }
+
+            if (day === this.selected.date() && this.selected.isSame(this.month, 'month')) {
+              this.bodyDivs[index].classList.add('cal-day__day--selected')
+            }
+
+            this.bodyDivs[index].classList.add('cal-day__month--current')
+          } else {
+            this.bodyDivs[index].classList.add('cal-day__month--next')
+          }
+
+          this.bodyDivs[index].innerText = day++
+        }        
+      }
+
+      drawMine() {
+        let startCounting = this.monthDays.lastPrevious - this.calendarDays.first;
+        startCounting = startCounting >= 6 ? 0 : startCounting;   
+
+        const presentReq = getDatesForSpecificMonth(present, this.monthString);
+        const absentReq = getDatesForSpecificMonth(absent, this.monthString);  
+        
+        // console.log(presentReq);
+        // console.log(presentReq);
+        
+        for(let day = 0; day < absentReq.length; day++) {
+          const dateLoc = startCounting + absentReq[day].getDate();
+          this.bodyDivs[dateLoc].classList.add('cal-day__day--absent');
+        }
+        for(let day = 0; day < presentReq.length; day++) {
+          const dateLoc = startCounting + presentReq[day].getDate();
+          this.bodyDivs[dateLoc].classList.add('cal-day__day--present');
+        }
+        
+
+        prevMonthData = {calendarDays: this.calendarDays, monthString: this.monthString, monthDays: this.monthDays};
+      }
+
+      cleanCssClasses(selected, index) {
+        this.bodyDivs[index].classList.contains('cal-day__month--next') &&
+          this.bodyDivs[index].classList.remove('cal-day__month--next')
+        this.bodyDivs[index].classList.contains('cal-day__month--previous') &&
+          this.bodyDivs[index].classList.remove('cal-day__month--previous')
+        this.bodyDivs[index].classList.contains('cal-day__month--current') &&
+          this.bodyDivs[index].classList.remove('cal-day__month--current')
+        this.bodyDivs[index].classList.contains('cal-day__day--today') &&
+          this.bodyDivs[index].classList.remove('cal-day__day--today')
+        if (selected) {
+          this.bodyDivs[index].classList.contains('cal-day__day--selected') &&
+            this.bodyDivs[index].classList.remove('cal-day__day--selected')
+        }
+        
+      }
+
+      cleanCssClassesMine() {
+        if(prevMonthData !== null) {
+
+          let startCounting = prevMonthData.monthDays.lastPrevious - prevMonthData.calendarDays.first;
+          startCounting = startCounting >= 6 ? 0 : startCounting;   
+
+          const presentReq = getDatesForSpecificMonth(present, prevMonthData.monthString);
+          const absentReq = getDatesForSpecificMonth(absent, prevMonthData.monthString);
+
+
+          for(let day = 0; day < presentReq.length; day++) {
+            const dateLoc = startCounting + presentReq[day].getDate();
+            this.bodyDivs[dateLoc].classList.remove('cal-day__day--present');
+          }
+          for(let day = 0; day < absentReq.length; day++) {
+            const dateLoc = startCounting + absentReq[day].getDate();
+            this.bodyDivs[dateLoc].classList.remove('cal-day__day--absent');
+          }
+        }
+      }
+    }
+
+    const cal = new Calendar()
+    cal.init()
+  </script>
+
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+
+  <%- include("partials/scripts") -%>

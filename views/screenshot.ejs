@@ -1,0 +1,128 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <%- include("partials/ssidebar") -%>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <%- include("partials/topbar", {name: user.name}) -%>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4" style="height: 100vh;"> -->
+          <div style="height: 100vh; text-align: center;">
+            <h1 class="h3 mb-0 text-gray-800">
+              Upload Your Face Image
+            </h1>
+
+            <h4 class="h6 mb-0 text-red-800" style="color: red">
+              This image will be used to mark your attendance, so provide a clear face image.
+            </h4>
+
+            <div class="image-card">
+              <div class="drag-image-box">
+                <h6>Drag & Drop File Here</h6>
+              </div>
+              <form id="imageForm"
+                  method="POST"
+                  action="/upload-image"
+                  onsubmit="return handleSubmit();"
+                  enctype="multipart/form-data" >
+
+                  <input class="user-image" type="file" hidden name="userImage">
+
+              </form>  
+              <span class="warning"><p></p></span> 
+              <button class="add-button">Add Image</button>
+              <button class="upload-button" form="imageForm">Upload Image</button>
+            </div>
+          </div>
+
+          <!-- Modal Logout -->
+          <%- include("partials/modalLogout") -%>
+
+        </div>
+        <!---Container Fluid-->
+      </div>
+
+      <!-- Footer -->
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+
+  <script>
+
+    const dropArea = document.querySelector(".drag-image-box");
+    const dragText = dropArea.querySelector("h6");
+        
+    let file = "";
+
+    input = document.querySelector(".user-image");
+    addButton = document.querySelector(".add-button");
+    warningText = document.querySelector(".warning p");
+
+    addButton.onclick = () => {
+      input.click();
+    }
+
+    function handleSubmit(event) {
+      if(!file) {
+        warningText.textContent = "Please add an image first";
+        return false; 
+      }
+      return true;
+    }
+
+    input.addEventListener("change", function () {
+      file = this.files[0];
+      dropArea.classList.add("active");
+      warningText.textContent = "";
+      viewfile();
+    });
+
+    dropArea.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      dropArea.classList.add("active");
+      dragText.textContent = "Release to Upload File";
+    });
+
+
+    dropArea.addEventListener("dragleave", () => {
+      dropArea.classList.remove("active");
+      dragText.textContent = "Drag & Drop to Upload File";
+    });
+
+    dropArea.addEventListener("drop", (event) => {
+      event.preventDefault();
+      file = event.dataTransfer.files[0];
+      warningText.textContent = "";
+      viewfile();
+    });
+
+    function viewfile() {
+      let fileType = file.type;
+      let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+      if (validExtensions.includes(fileType)) {
+        let fileReader = new FileReader();
+        fileReader.onload = () => {
+          let fileURL = fileReader.result;
+          let imgTag = `<img src="${fileURL}" alt="image">`;
+          dropArea.innerHTML = imgTag;
+        }
+        fileReader.readAsDataURL(file);
+      } else {
+        alert("This is not an Image File!");
+        dropArea.classList.remove("active");
+        dragText.textContent = "Drag & Drop to Upload File";
+      }
+    }
+
+  </script>
+
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+
+  <%- include("partials/scripts") -%>

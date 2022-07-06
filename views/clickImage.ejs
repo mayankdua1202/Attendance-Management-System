@@ -1,0 +1,152 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <%- include("partials/ssidebar") -%>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <%- include("partials/topbar", {name: user.name}) -%>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4" style="height: 100vh;"> -->
+          <div style="height: 100vh; text-align: center;">
+            <h1 class="h3 mb-0 text-gray-800">
+              Take the screenshot of your image
+            </h1>
+
+            <h4 class="h6 mb-0 text-red-800 warning">
+              This image will be used to mark your attendance, so provide a clear face image.
+            </h4>
+
+            <div class="image-card box0">
+              <button onclick="startWebcam();">Start Webcam</button>
+              <p class="warning" id="warningPara"></p>
+            </div>
+
+            <div class="image-card box1">        
+              <div class="image-box ">
+                  <video onclick="snapshot(this);" width="100%" height="100%" id="video" autoplay></video>
+              </div>              
+              <div><button onclick="snapshot();">Take Snapshot</button></div>
+            </div>
+
+            <div class="image-card box2">        
+              <div class="image-box">
+                <canvas id="myCanvas" width="500px" height="500px"></canvas>
+              </div>
+              <div><button onclick="stopWebcam();">Recognize Face</button></div>
+            </div>
+          </div>
+
+          <form id="clickImageForm" method="post" action="/mark-present"> 
+            <input id="clickImage" name="clickImage" type="hidden" value="">
+          </form>
+
+          <!-- Modal Logout -->
+          <%- include("partials/modalLogout") -%>
+
+        </div>
+        <!---Container Fluid-->
+      </div>
+
+      <!-- Footer -->
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+
+  <script>
+    //--------------------
+    // GET USER MEDIA CODE
+    //--------------------
+
+    let warningPara = document.querySelector("#warningPara");
+
+    navigator.getUserMedia = (navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia);
+
+    var video = false;
+    var webcamStream = false;
+    var snapshotTaken = false;
+    var canvas, ctx;
+
+    function startWebcam() {
+      init();
+      warningPara.textContent = "";
+      if (navigator.getUserMedia) {
+        navigator.getUserMedia(
+
+          // constraints
+          {
+            video: true,
+            audio: false
+          },
+
+          // successCallback
+          function (localMediaStream) {
+            video = document.querySelector('video');
+            video.srcObject = localMediaStream;
+            webcamStream = localMediaStream;
+          },
+
+          // errorCallback
+          function (err) {
+            console.log("The following error occured: " + err);
+          }
+        );
+      } else {
+        console.log("getUserMedia not supported");
+      }
+    }
+
+    function stopWebcam() {
+
+      if(video === false) {
+        warningPara.textContent = "Please start the webcam first";
+      }
+      else if(snapshotTaken === false) {
+        warningPara.textContent = "Please take a snapshot first";
+      }
+      else {
+        // Here all the routing part will come
+
+        const clickImageForm = document.querySelector("#clickImageForm");
+        const clickImage = document.querySelector("#clickImage");
+
+        clickImage.value = canvas.toDataURL().split(',')[1];
+        clickImageForm.submit();
+      }
+    }
+    //---------------------
+    // TAKE A SNAPSHOT CODE
+    //---------------------
+    
+
+    function init() {
+      // Get the canvas and obtain a context for
+      // drawing in it
+      canvas = document.getElementById("myCanvas");
+      ctx = canvas.getContext('2d');
+    }
+
+    function snapshot() {
+      if(video === false) {
+        warningPara.textContent = "Please start the webcam first";
+      }
+      else {
+        snapshotTaken = true;
+      }
+      // Draws current image from the video element into the canvas
+      ctx.drawImage(video, 0, 30, canvas.width, canvas.height-60);
+    }
+  </script>
+
+  <!-- Scroll to top -->
+  <%- include("partials/scrollToTop") -%>
+
+  <%- include("partials/scripts") -%>

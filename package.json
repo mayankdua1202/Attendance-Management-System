@@ -1,0 +1,25 @@
+{
+  "name": "facerecongitionattendanceapp",
+  "version": "1.0.0",
+  "description": "Using face recognition for taking attendance",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mayank Dua",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "child_process": "^1.0.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "mongoose": "^6.1.4",
+    "multer": "^1.4.4",
+    "path": "^0.12.7",
+    "sharp": "^0.29.3",
+    "uuidv4": "^6.2.12"
+  }
+}

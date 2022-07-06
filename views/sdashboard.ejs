@@ -1,0 +1,69 @@
+<%- include("partials/headPortion", {page: page}) -%>
+
+<body id="page-top">
+  <div id="wrapper">
+    <%- include("partials/ssidebar") -%>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <%- include("partials/topbar", {name: user.name}) -%>
+
+        <div class="container-fluid student-dashboard" id="container-wrapper">
+          
+          <h1 class="h3 mb-0 text-gray-800">
+            <form class="markAttendanceForm" action="/click-image" method="get" onsubmit="return handleSubmit()">
+              <button class="btn btn-primary markAttendance">Mark Attendance</button>
+            </form>
+          </h1>
+
+          <h5 class="not-taking vis0">Ooops! Currently, your teacher is not taking attendance. Try it after some time
+          </h5>
+
+          <h5 class="taking vis1">Teacher is taking attendance. Mark your presence.</h5>
+
+          <div class="loader vis2"></div>
+
+          <h5 class="taking vis3">You are being marked present, just look at your webcam.</h5>
+
+        </div>
+        <%- include("partials/modalLogout") -%>
+
+      </div>
+
+      <%- include("partials/footer") -%>
+    </div>
+  </div>
+
+  <script>
+    textField = document.querySelector(".not-taking");
+    button = document.querySelector(".markAttendance");
+    form = document.querySelector(".markAttendanceForm");
+
+    function handleSubmit(event) {
+
+      if ('<%= attendanceStatus %>' === 'false') {
+        document.querySelector(".vis0").style.display = "block";
+        return false;
+      } else {
+        let submitForm = false;
+        document.querySelector(".vis1").style.display = "block";
+        document.querySelector(".vis2").style.display = "block";
+        setTimeout(function () {
+          document.querySelector(".vis3").style.display = "block";
+        }, 2000);
+        return false;
+      }
+    }
+
+    button.onclick = () => {
+      if ('<%= attendanceStatus %>' === 'true') {
+        setTimeout(function () {
+          form.submit();
+        }, 5000);
+      }
+    }
+  </script>
+
+  <%- include("partials/scrollToTop") -%>
+
+  <%- include("partials/scripts") -%>
